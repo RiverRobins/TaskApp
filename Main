@@ -1,0 +1,12 @@
+from tkinter import *
+from classes.Task import *
+
+root = Tk()
+
+topFrame = Frame()
+topFrame.pack()
+
+dailyFrame = Frame()
+dailyFrame.pack()
+
+root.mainloop()
