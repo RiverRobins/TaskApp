@@ -9,4 +9,10 @@ topFrame.pack()
 dailyFrame = Frame()
 dailyFrame.pack()
 
+onetimeFrame = Frame()
+onetimeFrame.pack()
+
+text = Label(topFrame, text="Working")
+text.pack()
+
 root.mainloop()

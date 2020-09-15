@@ -19,5 +19,16 @@ class Task:
         self.dependencies = args
 
     def display(self, base):
+        #mainframe start
         mainframe = Frame(base)
+        mainframe.pack()
+
+        #banner start
+        banner = Frame(mainframe)
+        banner.pack()
+
+
+        #banner end
+
+        #mainframe end
 
