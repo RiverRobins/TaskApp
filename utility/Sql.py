@@ -6,25 +6,27 @@ db = mysql.connector.connect(host="localhost", user=Creds.mySql_user, passwd=Cre
 cur = db.cursor()
 
 
-def init():
+def initial():
     cur.execute("CREATE DATABASE IF NOT EXISTS tasks_db")
-    cur.execute("CREATE TABLE IF NOT EXISTS daily("
-                "id BIGINT UNSIGNED AUTO_INCREMENT;"
-                "title VARCHAR(255),"
-                "status ENUM('incomplete', 'completed', 'missed') DEFAULT 'incomplete',"
-                "description TEXT,"
-                "deadline DATETIME default CONCAT(CURDATE(), ' 20-00-00')"
-                ")")
-    cur.execute("CREATE TABLE IF NOT EXISTS onetime("
-                "id BIGINT UNSIGNED AUTO_INCREMENT;"
-                "title VARCHAR(255),"
-                "created DATE,"
-                "status ENUM('incomplete', 'completed', 'missed') DEFAULT 'incomplete',"
-                "description TEXT,"
-                "deadline DATE default NULL"
-                ")")
-    # cur.execute("CREATE TABLE IF NOT EXISTS dependencies("
-    #             ")")
+    cur.execute("""CREATE TABLE IF NOT EXISTS daily(
+                id BIGINT UNSIGNED AUTO_INCREMENT,
+                title VARCHAR(255),
+                status ENUM('incomplete', 'completed', 'missed') DEFAULT 'incomplete',
+                description TEXT,
+                deadline DATETIME,
+                PRIMARY KEY (id)
+                )""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS onetime(
+                id BIGINT UNSIGNED AUTO_INCREMENT,
+                title VARCHAR(255),
+                created DATE,
+                status ENUM('incomplete', 'completed', 'missed') DEFAULT 'incomplete',
+                description TEXT,
+                deadline DATE default NULL,
+                PRIMARY KEY (id)
+                )""")
+    # cur.execute("CREATE TABLE IF NOT EXISTS dependencies("""
+    #             ")""")
 
 
 def update_status(id, new_status, table="daily"):
@@ -43,7 +45,7 @@ def update_status(id, new_status, table="daily"):
 #             cur.execute("")
 
 def seed(clear="None", *args):
-    if clear == "All":
+    if clear == "All" or clear:
         cur.execute("TRUNCATE TABLE daily")
         cur.execute("TRUNCATE TABLE onetime")
         # cur.execute("TRUNCATE TABLE dependencies")
@@ -57,10 +59,10 @@ def seed(clear="None", *args):
     else:
         if "daily" in args:
             for num in range(5, random.randint(5, 20)):
-                cur.execute(f"INSERT INTO daily(title, status, description) VALUES ({make(0)}, incomplete, {make(1)})")
+                cur.execute(f"INSERT INTO daily(title, status, description, deadline) VALUES ({make(0)}, incomplete, {make(1)}. 'CONCAT(CURRENT_DATE, ' 20:00:00')')")
         if "onetime" in args:
             for num in range(5, random.randint(5, 30)):
-                cur.execute(f"INSERT INTO daily(title, status, description) VALUES ('{make(0)}', 'incomplete', '{make(1)}')")
+                cur.execute(f"INSERT INTO daily(title, status, description, deadline) VALUES ('{make(0)}', 'incomplete', '{make(1)}', 'CONCAT(CURRENT_DATE, ' 20:00:00')')")
 
 
 def make(output):

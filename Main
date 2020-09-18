@@ -2,7 +2,7 @@ from tkinter import *
 from classes.Task import *
 from utility.Sql import *
 
-init()
+initial()
 
 seed(True)
 
