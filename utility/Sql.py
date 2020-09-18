@@ -2,17 +2,18 @@ import mysql.connector
 import random
 import Creds
 
-db = mysql.connector.connect(host="localhost", user=Creds.mySql_user, passwd=Creds.mySql_password, database="tasks")
+db = mysql.connector.connect(host="localhost", user=Creds.mySql_user, passwd=Creds.mySql_password, database="tasks_db")
 cur = db.cursor()
 
 
 def init():
-    cur.execute("CREATE DATABASE IF NOT EXISTS tasks")
+    cur.execute("CREATE DATABASE IF NOT EXISTS tasks_db")
     cur.execute("CREATE TABLE IF NOT EXISTS daily("
                 "id BIGINT UNSIGNED AUTO_INCREMENT;"
                 "title VARCHAR(255),"
                 "status ENUM('incomplete', 'completed', 'missed') DEFAULT 'incomplete',"
                 "description TEXT,"
+                "deadline DATETIME default CONCAT(CURDATE(), ' 20-00-00')"
                 ")")
     cur.execute("CREATE TABLE IF NOT EXISTS onetime("
                 "id BIGINT UNSIGNED AUTO_INCREMENT;"
@@ -25,6 +26,21 @@ def init():
     # cur.execute("CREATE TABLE IF NOT EXISTS dependencies("
     #             ")")
 
+
+def update_status(id, new_status, table="daily"):
+    cur.execute(f"UPDATE {table} SET status = '{new_status}' WHERE id = {id}")
+
+
+# def refresh():
+#     cur.execute("SELECT * FROM daily WHERE status = 'incomplete'")
+#     daily_tasks_sql = cur.fetchall()
+#     cur.execute("SELECT * FROM onetime WHERE status = 'incomplete'")
+#     onetime_tasks_sql = cur.fetchall()
+#     daily_str = ""
+#     onetime_str = ""
+#     for i in daily_tasks_sql:
+#         if i[4] == "":
+#             cur.execute("")
 
 def seed(clear="None", *args):
     if clear == "All":
@@ -56,3 +72,4 @@ def make(output):
         temp = "Do "
         for i in range(0, random.randint(2, 20)):
             temp += descriptions[random.randint(0, len(descriptions) - 1)] + " "
+

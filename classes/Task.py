@@ -27,6 +27,9 @@ class Task:
         banner = Frame(mainframe)
         banner.pack()
 
+    def subtitle(self):
+        if self.status == "incomplete":
+            return
 
         #banner end
 
