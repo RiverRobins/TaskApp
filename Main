@@ -1,10 +1,12 @@
 from tkinter import *
 from classes.Task import *
 from utility.Sql import *
+from utility.Display import *
 
 initial()
+seed("All")
 
-seed(True)
+daily_tasks = get_daily_tasks()
 
 root = Tk()
 root.geometry("350x600")
@@ -15,8 +17,14 @@ topFrame.pack()
 dailyFrame = Frame()
 dailyFrame.pack()
 
+for i in daily_tasks:
+    # print(f"title: {i.title}, description: {i.description}")
+    daily_card_display(dailyFrame, i)
+
 onetimeFrame = Frame()
 onetimeFrame.pack()
+
+
 
 text = Label(topFrame, text="Working")
 text.pack()

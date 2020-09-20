@@ -1,6 +1,7 @@
 import mysql.connector
 import random
 import Creds
+from classes.Task import Task
 
 db = mysql.connector.connect(host="localhost", user=Creds.mySql_user, passwd=Creds.mySql_password, database="tasks_db")
 cur = db.cursor()
@@ -29,8 +30,8 @@ def initial():
     #             ")""")
 
 
-def update_status(id, new_status, table="daily"):
-    cur.execute(f"UPDATE {table} SET status = '{new_status}' WHERE id = {id}")
+def update_status(item_id, new_status, table="daily"):
+    cur.execute(f"UPDATE {table} SET status = '{new_status}' WHERE id = {item_id}")
 
 
 # def refresh():
@@ -44,25 +45,23 @@ def update_status(id, new_status, table="daily"):
 #         if i[4] == "":
 #             cur.execute("")
 
-def seed(clear="None", *args):
-    if clear == "All" or clear:
+def seed(clear="None", table="All"):
+    if clear == "All":
         cur.execute("TRUNCATE TABLE daily")
         cur.execute("TRUNCATE TABLE onetime")
         # cur.execute("TRUNCATE TABLE dependencies")
     elif clear != "None":
         cur.execute(f"TRUNCATE TABLE {clear}")
 
-    if args is None:
-        seed("daily")
-        seed("onetime")
-        # seed("dependencies")
-    else:
-        if "daily" in args:
-            for num in range(5, random.randint(5, 20)):
-                cur.execute(f"INSERT INTO daily(title, status, description, deadline) VALUES ({make(0)}, incomplete, {make(1)}. 'CONCAT(CURRENT_DATE, ' 20:00:00')')")
-        if "onetime" in args:
-            for num in range(5, random.randint(5, 30)):
-                cur.execute(f"INSERT INTO daily(title, status, description, deadline) VALUES ('{make(0)}', 'incomplete', '{make(1)}', 'CONCAT(CURRENT_DATE, ' 20:00:00')')")
+    if table == "All":
+        seed(table="daily")
+        seed(table="onetime")
+    elif table == "daily":
+        for num in range(5, random.randint(5, 20)):
+            cur.execute(f"INSERT INTO daily(title, status, description, deadline) VALUES ('{make(0)}', 'incomplete', '{make(1)}', CONCAT(CURRENT_DATE, ' 20:00:00'))")
+    elif table == "onetime":
+        for num in range(5, random.randint(5, 30)):
+            cur.execute(f"INSERT INTO onetime(title, status, created, description, deadline) VALUES ('{make(0)}', 'incomplete', CURRENT_DATE, '{make(1)}', CONCAT(CURRENT_DATE, ' 20:00:00'))")
 
 
 def make(output):
@@ -75,3 +74,10 @@ def make(output):
         for i in range(0, random.randint(2, 20)):
             temp += descriptions[random.randint(0, len(descriptions) - 1)] + " "
 
+def get_daily_tasks():
+    cur.execute("SELECT * FROM daily")
+    tasks = []
+    for i in cur.fetchall():
+        print(i)
+        tasks.append(Task(sql=i))
+    return tasks

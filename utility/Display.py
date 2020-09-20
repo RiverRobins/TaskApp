@@ -2,13 +2,13 @@ from tkinter import *
 from classes import Task
 
 
-def daily_card(base, task):
+def daily_card_display(base, task):
     mainframe = Frame(base)
     mainframe.pack()
 
     title = Label(mainframe, text=task.title)
     title.pack()
-    subtitle = Label(mainframe, text=f"{task.status}, due by {format_time(task.deadline[10, -1])}" if(task.status == "incomplete") else task.status)
+    subtitle = Label(mainframe, text=task.subtitle())
     subtitle.pack()
     description = Label(mainframe, text=task.description)
     description.pack()
