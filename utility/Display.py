@@ -1,10 +1,11 @@
 from tkinter import *
 from classes import Task
-
+from utility.Sql import *
 
 def daily_card_display(base, task):
     mainframe = Frame(base)
-    mainframe.pack()
+    mainframe.config(highlightbackground="grey", highlightthickness=2, width=10, height=60)
+    mainframe.pack(side=LEFT)
 
     title = Label(mainframe, text=task.title)
     title.pack()
@@ -13,9 +14,9 @@ def daily_card_display(base, task):
     description = Label(mainframe, text=task.description)
     description.pack()
 
-    button_done = Button(mainframe, text="Done")
+    button_done = Button(mainframe, text="Done", command=lambda: update_status(task.id, "completed"))
     button_done.pack()
-    button_failed = Button(mainframe, text="Incompleted")
+    button_failed = Button(mainframe, text="Incompleted", command=lambda: update_status(task.id, "missed"))
     button_failed.pack()
 
 

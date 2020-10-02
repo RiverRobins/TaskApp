@@ -9,7 +9,6 @@ class Task:
             if sql is None:
                 self.title = title
                 self.created = "NULL"  # datetime.datetime.now()
-                print(datetime.datetime.now())
                 self.status = "incomplete"
                 self.description = description
                 self.deadline = deadline
@@ -27,7 +26,6 @@ class Task:
             if sql is None:
                 self.title = title
                 self.created = "NULL"  # datetime.datetime.now()
-                print(datetime.datetime.now())
                 self.status = "incomplete"
                 self.description = description
                 self.deadline = deadline
@@ -49,7 +47,13 @@ class Task:
         banner.pack()
 
     def subtitle(self):
+        print(datetime.datetime.now())
+        print(self.deadline)
+        show = ""
         if self.status == "incomplete":
+            if str(self.deadline)[0:10] == str(datetime.datetime.now())[0:10]:
+                print("TRUE: deadline == datetime.now")
+                return f"Task is incomplete, due by {self.format_time(str(self.deadline)[-8:-1])}"
             return f"Task is incomplete, due by {self.deadline}"
         # elif self.status == "":
         else:
@@ -57,4 +61,10 @@ class Task:
         # banner end
 
         # mainframe end
+
+    def format_time(self, n):
+        if int(int(n[0:2]) < 12):
+            return f"{str(n[0:2])}:{str(n[4:5])} AM"
+        else:
+            return f"{str(n[0:2])}:{str(n[4:5])} PM"
 

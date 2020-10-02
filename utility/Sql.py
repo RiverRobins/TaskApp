@@ -74,10 +74,11 @@ def make(output):
         for i in range(0, random.randint(2, 20)):
             temp += descriptions[random.randint(0, len(descriptions) - 1)] + " "
 
+
 def get_daily_tasks():
     cur.execute("SELECT * FROM daily")
     tasks = []
     for i in cur.fetchall():
-        print(i)
+        # print("From daily: " + str(i))
         tasks.append(Task(sql=i))
     return tasks

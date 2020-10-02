@@ -9,7 +9,7 @@ seed("All")
 daily_tasks = get_daily_tasks()
 
 root = Tk()
-root.geometry("350x600")
+root.geometry("800x800")
 
 topFrame = Frame()
 topFrame.pack()
